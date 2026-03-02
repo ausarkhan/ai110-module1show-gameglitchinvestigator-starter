@@ -1,48 +1,11 @@
-# 💭 Reflection: Game Glitch Investigator
-
-Answer each question in 3 to 5 sentences. Be specific and honest about what actually happened while you worked. This is about your process, not trying to sound perfect.
-
-## 1. What was broken when you started?
-While running the Streamlit game, I identified several issues:
-The hint logic was reversed. When my guess was higher than the secret, the app told me to guess “HIGHER.”
-Switching difficulties did not regenerate the secret number, sometimes making the game impossible to win.
-The scoring system incorrectly awarded +5 points for “Too High” guesses on even-numbered attempts.
-The attempts counter incremented even for invalid inputs.
-These bugs affected core gameplay logic, state management, and fairness.
-- What did the game look like the first time you ran it?
-- List at least two concrete bugs you noticed at the start  
-  (for example: "the secret number kept changing" or "the hints were backwards").
-
----
-
-## 2. How did you use AI as a teammate?
-
-- Which AI tools did you use on this project (for example: ChatGPT, Gemini, Copilot)?
-- Give one example of an AI suggestion that was correct (including what the AI suggested and how you verified the result).
-- Give one example of an AI suggestion that was incorrect or misleading (including what the AI suggested and how you verified the result).
-
----
-
-## 3. Debugging and testing your fixes
-
-- How did you decide whether a bug was really fixed?
-- Describe at least one test you ran (manual or using pytest)  
-  and what it showed you about your code.
-- Did AI help you design or understand any tests? How?
-
----
-
-## 4. What did you learn about Streamlit and state?
-
-- In your own words, explain why the secret number kept changing in the original app.
-- How would you explain Streamlit "reruns" and session state to a friend who has never used Streamlit?
-- What change did you make that finally gave the game a stable secret number?
-
----
-
-## 5. Looking ahead: your developer habits
-
-- What is one habit or strategy from this project that you want to reuse in future labs or projects?
-  - This could be a testing habit, a prompting strategy, or a way you used Git.
-- What is one thing you would do differently next time you work with AI on a coding task?
-- In one or two sentences, describe how this project changed the way you think about AI generated code.
+Reflection: Game Glitch Investigator
+1. What was broken when you started?
+The first time I ran the game, it looked normal at first — a basic number guessing app with difficulty settings and a score. But once I started playing, things felt off. The most obvious bug was that when I guessed a number higher than the secret, the app told me to go “HIGHER,” which was clearly backwards. I also noticed that switching difficulties didn’t regenerate the secret number, which sometimes made the game impossible to win if the secret was outside the new range. The score system also awarded +5 points for “Too High” guesses on even-numbered attempts, which meant you could exploit the game. Finally, invalid inputs still counted as attempts, which didn’t feel fair.
+2. How did you use AI as a teammate?
+I used ChatGPT and Copilot during this project. Copilot helped generate refactored versions of functions when moving logic into logic_utils.py, and ChatGPT helped me reason through what was actually wrong with the hint logic and state reset behavior. One correct AI suggestion was simplifying the check_guess function and removing the string comparison fallback — I verified that fix by manually testing high/low guesses and running pytest tests to confirm correct outcomes. One misleading suggestion was initially keeping some of the scoring logic unchanged without addressing the exploit clearly; I had to manually test repeated “Too High” guesses to see that the exploit still existed. That reminded me that AI suggestions still need human verification.
+3. Debugging and testing your fixes
+I decided a bug was truly fixed only after testing it both manually in Streamlit and with pytest. For example, I wrote a pytest test where check_guess(60, 50) should return "Too High" and contain "LOWER" in the message. When that test passed consistently, I knew the inverted hint bug was fixed. I also manually switched difficulty levels multiple times to ensure the secret regenerated correctly within the new range. AI helped me structure some of the test functions, but I had to adjust them to match my exact return values and behavior.
+4. What did you learn about Streamlit and state?
+The secret number kept causing issues because Streamlit reruns the entire script from top to bottom every time the user interacts with the app. If the secret isn’t carefully stored in st.session_state, it can reset or behave unpredictably. I would explain Streamlit reruns like this: every button click restarts your script, but session state is the memory that survives those restarts. The change that finally made the game stable was explicitly regenerating the secret only when the difficulty changed or when “New Game” was clicked, instead of relying on implicit initialization.
+5. Looking ahead: your developer habits
+One habit I want to reuse is writing small, targeted tests immediately after fixing a bug. It made debugging more structured instead of guessing whether things were fixed. Next time I work with AI on a coding task, I would prompt it more specifically and verify each change incrementally instead of accepting multiple changes at once. This project changed the way I think about AI-generated code because I realized it often looks confident and complete, but subtle logic and state bugs can still exist. AI is a strong assistant, but it is not a substitute for structured debugging and testing.
