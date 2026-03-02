@@ -3,7 +3,12 @@
 Answer each question in 3 to 5 sentences. Be specific and honest about what actually happened while you worked. This is about your process, not trying to sound perfect.
 
 ## 1. What was broken when you started?
-
+While running the Streamlit game, I identified several issues:
+The hint logic was reversed. When my guess was higher than the secret, the app told me to guess “HIGHER.”
+Switching difficulties did not regenerate the secret number, sometimes making the game impossible to win.
+The scoring system incorrectly awarded +5 points for “Too High” guesses on even-numbered attempts.
+The attempts counter incremented even for invalid inputs.
+These bugs affected core gameplay logic, state management, and fairness.
 - What did the game look like the first time you ran it?
 - List at least two concrete bugs you noticed at the start  
   (for example: "the secret number kept changing" or "the hints were backwards").
